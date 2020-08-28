@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -78,6 +80,25 @@ public class UserApiController {
         if (user.validatePassword(user.getPassword(), userDB.getPassword())) {
             rs = Obj.writeValueAsString(userDB);
         }
+        return rs;
+    }
+    @PostMapping("/updateProfile")
+    public String updateProfile(@RequestBody User user, HttpServletRequest request) throws JsonProcessingException, InvalidKeySpecException, NoSuchAlgorithmException {
+        user.setPassword(pass().encode(user.getPassword()));
+        user.setUpdatedDate(new Timestamp(System.currentTimeMillis()));
+        userDao.save(user);
+        ObjectMapper Obj = new ObjectMapper();
+        String rs = Obj.writeValueAsString(user);
+        return rs;
+    }
+
+    @PostMapping("/getProfile")
+    public String getProfile(HttpServletRequest request) throws JsonProcessingException, InvalidKeySpecException, NoSuchAlgorithmException {
+        HttpSession session = request.getSession(true);
+        String userId = (String) session.getAttribute("connectedUser");
+        User user = userDao.findById(userId).get();
+        ObjectMapper Obj = new ObjectMapper();
+        String rs = Obj.writeValueAsString(user);
         return rs;
     }
 }
