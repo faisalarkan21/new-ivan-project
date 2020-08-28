@@ -19,11 +19,4 @@ public class IndexController {
         System.out.println(userId);
         return "index";
     }
-
-    @GetMapping
-    @RequestMapping({"/buses"})
-    public String viewBus() {
-
-        return "busView";
-    }
 }
