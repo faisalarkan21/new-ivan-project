@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
 
 <head>
 
@@ -186,8 +186,8 @@
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <div>
-                        <h1 class="h3 mb-0 text-gray-800">Welcome,</h1>
-                        <h1 class="h3 mb-0 text-gray-800">hello world</h1>
+                    <h1 class="h3 mb-0 text-gray-800">Welcome, </h1>
+                    <h1 class="h3 mb-0 text-gray-800" id="firstName" th:text="${firstName}"></h1>
                     </div>
                 </div>
 
@@ -201,7 +201,7 @@
                                 <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
                                      src="img/undraw_posting_photo.svg" alt="">
                                 <div class="text-center">
-                                    <h4 id="profileName">first + last name</h4>
+                                    <h4 id="profileName" th:text="${firstName+' '+lastName}">first + last name</h4>
                                 </div>
                             </div>
                         </div>
@@ -214,7 +214,7 @@
                                             <h5>First Name</h5>
                                             <div class="input-group">
                                                 <input type="text" class="form-control bg-light border-0 small"
-                                                       id="changeFirstName"
+                                                       id="changeFirstName" th:value="${firstName}"
                                                        aria-label="Search" aria-describedby="basic-addon2">
                                             </div>
                                         </div>
@@ -223,7 +223,7 @@
                                             <h5>Last Name</h5>
                                             <div class="input-group">
                                                 <input type="text" class="form-control bg-light border-0 small"
-                                                       id="changeLastName"
+                                                       id="changeLastName" th:value="${lastName}"
                                                        aria-label="Search" aria-describedby="basic-addon2">
                                             </div>
                                         </div>
@@ -232,7 +232,7 @@
                                             <h5>Phone Number</h5>
                                             <div class="input-group">
                                                 <input type="text" class="form-control bg-light border-0 small"
-                                                       id="changePhoneNumber"
+                                                       id="changePhoneNumber" th:value="${phoneNumber}"
                                                        aria-label="Search" aria-describedby="basic-addon2">
                                             </div>
                                         </div>
@@ -255,7 +255,7 @@
                                             <h5>Email</h5>
                                             <div class="input-group">
                                                 <input type="email" class="form-control bg-light border-0 small"
-                                                       id="changeEmail"
+                                                       id="changeEmail" th:value="${email}"
                                                        aria-label="Search" aria-describedby="basic-addon2">
                                             </div>
                                         </div>
@@ -338,7 +338,7 @@
 <!-- Custom scripts for all pages-->
 <script src="js/sb-admin-2.min.js"></script>
 
-<script src="js/ProfilePage.js"></script>
+<script type="text/javascript" th:src="@{/js/ProfilePage.js}"></script>
 
 </body>
 
