@@ -39,6 +39,7 @@ public class UserApiController {
     public BCryptPasswordEncoder pass() {
         return new BCryptPasswordEncoder();
     }
+
     @PostMapping("/createNewAccount")
     public HttpStatus createNewAccount(@RequestBody RegisterRequest registerRequest) {
         User user = new User();
@@ -82,13 +83,26 @@ public class UserApiController {
         }
         return rs;
     }
+
     @PostMapping("/updateProfile")
     public String updateProfile(@RequestBody User user, HttpServletRequest request) throws JsonProcessingException, InvalidKeySpecException, NoSuchAlgorithmException {
-        user.setPassword(pass().encode(user.getPassword()));
-        user.setUpdatedDate(new Timestamp(System.currentTimeMillis()));
-        userDao.save(user);
+        HttpSession session = request.getSession(true);
+        String userId = (String) session.getAttribute("connectedUser");
+        User userDB = userDao.findById(userId).get();
+        if(user.getFirstName()!=null)
+            userDB.setFirstName(user.getFirstName());
+        if(user.getLastName()!=null)
+            userDB.setLastName(user.getLastName());
+        if(user.getMobileNumber()!=null)
+            userDB.setMobileNumber(user.getMobileNumber());
+        if(user.getEmail()!=null)
+            userDB.setEmail(user.getEmail());
+        if(user.getPassword()!=null && user.getPassword()!="")
+            userDB.setPassword(pass().encode(user.getPassword()));
+        userDB.setUpdatedDate(new Timestamp(System.currentTimeMillis()));
+        userDao.save(userDB);
         ObjectMapper Obj = new ObjectMapper();
-        String rs = Obj.writeValueAsString(user);
+        String rs = Obj.writeValueAsString(userDB);
         return rs;
     }
 
