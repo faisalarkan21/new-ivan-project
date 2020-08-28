@@ -19,6 +19,9 @@
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
+    <link rel="stylesheet" href="css/kendo.common.min.css"/>
+    <link rel="stylesheet" href="css/kendo.fiori.min.css"/>
+    <link rel="stylesheet" href="css/kendo.fiori.mobile.min.css"/>
 </head>
 
 <body id="page-top">
@@ -35,7 +38,6 @@
                 <i class="fas fa-laugh-wink"></i>
             </div>
             <div class="sidebar-brand-text mx-3">Final Project
-                <!--          <sup>2</sup>-->
             </div>
         </a>
 
@@ -49,7 +51,7 @@
                 <span>Dashboard</span></a>
         </li>
 
-        <li class="nav-item active">
+        <li class="nav-item">
             <a class="nav-link" href="agency">
                 <i class="fas fa-fw fa-suitcase"></i>
                 <span>Agency</span></a>
@@ -64,8 +66,8 @@
         <!--        </editor-fold>-->
 
         <!--        <editor-fold desc="Trips On Side Bar">-->
-        <li class="nav-item">
-            <a class="nav-link" href="trips">
+        <li class="nav-item active">
+            <a class="nav-link" href="trip">
                 <i class="fas fa-fw fa-road"></i>
                 <span>Trips</span></a>
         </li>
@@ -307,59 +309,24 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-4 text-gray-800">Agency Details</h1>
+                <h1 class="h3 mb-4 text-gray-800">Trip Details</h1>
                 <div class="row">
                     <!-- Content Row -->
-                    <div class="row">
-                        <!-- Agency Picture -->
-                        <div class="col-6">
-                            <div class="card shadow mb-4">
-                                <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
-                                     src="img/undraw_posting_photo.svg" alt="">
-                                <div class="text-center">
-                                    <h4 id="agencyName" class="text-gray-800">Agency name</h4>
-                                    <h6 id="agencyDetails">Agency code</h6>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="card shadow mb-4">
+                        <!--<editor-fold desc="Commended Title top table">-->
+                        <!--                    <div class="card-header py-3">-->
+                        <!--                        <h6 class="m-0 font-weight-bold text-primary">Buses</h6>-->
+                        <!--                    </div>-->
 
-                        <div class="col-6">
-                            <div class="card shadow mb-4">
-                                <div class="card-body">
-                                    <form action="#" method="post" id="updateAgency">
-                                        <div class="row">
-                                            <h5>Agency Name</h5>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control bg-light border-0 small"
-                                                       id="changeAgencyName"
-                                                       aria-label="Search" aria-describedby="basic-addon2">
-                                            </div>
-                                        </div>
-                                        <hr>
-                                        <div class="row">
-                                            <h5>Agency Details</h5>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control bg-light border-0 small"
-                                                       id="changeAgencyDetails"
-                                                       aria-label="Search" aria-describedby="basic-addon2">
-                                            </div>
-                                        </div>
-                                        <hr>
-                                        <div class="row">
-                                            <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
-                                                    type="submit" id="updateAgencyBtn">
-                                                Update
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
+                        <!--</editor-fold>-->
+                        <div class="card-body">
+                            <div id="tripTable" class="table-responsive">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- /.container-fluid -->
-
         </div>
         <!-- End of Main Content -->
 
@@ -413,6 +380,10 @@
 
 <!-- Custom scripts for all pages-->
 <script src="js/sb-admin-2.min.js"></script>
+
+<!-- Page level custom scripts -->
+<script src="js/kendo.all.min.js"></script>
+<script src="js/demo/tripTableKendo.js"></script>
 
 </body>
 
