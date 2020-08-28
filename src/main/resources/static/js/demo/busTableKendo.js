@@ -120,7 +120,4 @@ $(document).ready(function() {
             record = (this.dataSource.page() -1) * this.dataSource.pageSize();
         }
    });
-
-   var grid = $("#grid").data("kendoGrid");
-
 });
