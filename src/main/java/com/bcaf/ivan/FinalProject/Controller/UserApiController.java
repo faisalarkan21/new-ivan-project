@@ -4,6 +4,7 @@ import com.bcaf.ivan.FinalProject.Entity.Agency;
 import com.bcaf.ivan.FinalProject.Entity.User;
 import com.bcaf.ivan.FinalProject.Request.RegisterRequest;
 import com.bcaf.ivan.FinalProject.Util.AgencyDao;
+import com.bcaf.ivan.FinalProject.Util.CreateJWT;
 import com.bcaf.ivan.FinalProject.Util.RoleDao;
 import com.bcaf.ivan.FinalProject.Util.UserDao;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -11,11 +12,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -23,6 +22,7 @@ import javax.validation.Valid;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.Timestamp;
+
 
 @RestController
 @RequestMapping("/api")
@@ -71,6 +71,23 @@ public class UserApiController {
         return rs;
     }
 
+
+    @PostMapping("/login")
+    public String login(String email, String password) throws JsonProcessingException {
+        User user = userDao.findEmailValidation(email);
+        String encoded = pass().encode(password);
+        System.out.println(encoded);
+
+        if (pass().matches(password, user.getPassword())) {
+            String JWT = new CreateJWT().buildJWT(user.getId(), user.getEmail(), "login", 1000000);
+            ObjectMapper Obj = new ObjectMapper();
+            String rs = Obj.writeValueAsString(JWT);
+            return rs;
+        }else{
+            return "erorr";
+        }
+    }
+
     @PostMapping("/performLogin")
     public String performLogin(@RequestBody User user) throws JsonProcessingException, InvalidKeySpecException, NoSuchAlgorithmException {
         User userDB = userDao.findEmailValidation(user.getEmail());
@@ -89,15 +106,15 @@ public class UserApiController {
         HttpSession session = request.getSession(true);
         String userId = (String) session.getAttribute("connectedUser");
         User userDB = userDao.findById(userId).get();
-        if(user.getFirstName()!=null)
+        if (user.getFirstName() != null)
             userDB.setFirstName(user.getFirstName());
-        if(user.getLastName()!=null)
+        if (user.getLastName() != null)
             userDB.setLastName(user.getLastName());
-        if(user.getMobileNumber()!=null)
+        if (user.getMobileNumber() != null)
             userDB.setMobileNumber(user.getMobileNumber());
-        if(user.getEmail()!=null)
+        if (user.getEmail() != null)
             userDB.setEmail(user.getEmail());
-        if(user.getPassword()!=null && user.getPassword()!="")
+        if (user.getPassword() != null && user.getPassword() != "")
             userDB.setPassword(pass().encode(user.getPassword()));
         userDB.setUpdatedDate(new Timestamp(System.currentTimeMillis()));
         userDao.save(userDB);
