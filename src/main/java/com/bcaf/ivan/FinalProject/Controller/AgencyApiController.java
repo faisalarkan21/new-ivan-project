@@ -23,10 +23,8 @@ public class AgencyApiController {
     private AgencyDao agencyDao;
 
 
-    @PostMapping("/getAgency")
-    public String getAgency(HttpServletRequest request) throws JsonProcessingException {
-        HttpSession session = request.getSession(true);
-        String agencyId = (String) session.getAttribute("agencyId");
+    @GetMapping("/getAgency")
+    public String getAgency(HttpServletRequest request, @RequestParam(name = "id") String agencyId) throws JsonProcessingException {
         Agency agency = agencyDao.findById(agencyId).get();
         ObjectMapper Obj = new ObjectMapper();
         String rs = Obj.writeValueAsString(agency);

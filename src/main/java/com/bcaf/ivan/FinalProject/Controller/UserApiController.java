@@ -9,6 +9,7 @@ import com.bcaf.ivan.FinalProject.Util.RoleDao;
 import com.bcaf.ivan.FinalProject.Util.UserDao;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
@@ -75,14 +76,18 @@ public class UserApiController {
     @PostMapping("/login")
     public String login(String email, String password) throws JsonProcessingException {
         User user = userDao.findEmailValidation(email);
+        Agency agency = agencyDao.findAgencyByUserId(user.getId());
+
         String encoded = pass().encode(password);
         System.out.println(encoded);
 
         if (pass().matches(password, user.getPassword())) {
-            String JWT = new CreateJWT().buildJWT(user.getId(), user.getEmail(), "login", 1000000);
-            ObjectMapper Obj = new ObjectMapper();
-            String rs = Obj.writeValueAsString(JWT);
-            return rs;
+            String JWT = new CreateJWT().buildJWT(user.getId(), agency.getId(), user);
+            ObjectMapper mapper = new ObjectMapper();
+            ObjectNode userResponse = mapper.createObjectNode();
+            userResponse.put("data", JWT);
+            String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(userResponse);
+            return json;
         }else{
             return "erorr";
         }
